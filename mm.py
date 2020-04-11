@@ -20,11 +20,13 @@ leg = trimesh.load('chairs/'+str(c[l])+'/leg.obj')
 seat = trimesh.load('chairs/'+str(c[s])+'/seat.obj')
 
 # match
-
+# scale, translation, rotation
 
 # render
 if arm_exist==True:
-    scenes = trimesh.Scene([arm,back,leg,seat])
+    chair = trimesh.Scene([arm,back,leg,seat])
 else:
-    scenes = trimesh.Scene([back,leg,seat])
-scenes.show()
+    chair = trimesh.Scene([back,leg,seat])
+
+chair.export('chair.obj')
+chair.show()
