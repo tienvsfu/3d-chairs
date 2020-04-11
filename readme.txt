@@ -1,11 +1,11 @@
 464 project:
 
-to do:
+steps:
 1) pre-process: use blender to group parts into: seat, leg, back, arm --> done
-2) parse: load .obj and find bounding box --> wip
-3) mix: randomly choose and assemble parts (then apply rotation, translation, scaling) --> not started
+2) parse: convert to internal representation (trimesh) --> done
+3) mix: randomly load and assemble parts --> done
+4) match: fix connections to make it pretty --> wip
 4) score: generate images for the scorer --> wip
-
 
 require: 
 * anaconda (for trimesh)

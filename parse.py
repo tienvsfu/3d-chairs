@@ -1,6 +1,7 @@
 import trimesh
 import random 
 
+# mix
 n = 10
 c = [173,347,470,515,688,1095,1325,2820,3001,39101]
 a = random.randint(0,n-1)
@@ -18,6 +19,10 @@ back = trimesh.load('chairs/'+str(c[b])+'/back.obj')
 leg = trimesh.load('chairs/'+str(c[l])+'/leg.obj')
 seat = trimesh.load('chairs/'+str(c[s])+'/seat.obj')
 
+# match
+
+
+# render
 if arm_exist==True:
     scenes = trimesh.Scene([arm,back,leg,seat])
 else:
