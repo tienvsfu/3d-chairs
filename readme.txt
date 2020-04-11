@@ -1,9 +1,10 @@
 464 project:
 1) pre-process: group segments (blender) --> done
 2) parse: convert to internal representation (trimesh) --> done
-3) mix: generate model randomly --> done
+3) mix: randomly generate model --> done
 4) match: fix connections (make it pretty) --> wip
 5) score: calculate score for new object --> wip
+
 
 require: 
 * anaconda (for trimesh)
