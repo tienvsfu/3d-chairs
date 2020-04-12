@@ -25,7 +25,26 @@ leg.visual.face_colors = [100,100,200,100]
 seat.visual.face_colors = [100,100,100,200]
 
 # match
-# scale, translation, rotation
+## fix width 
+if arm_exist==True:
+    armw = arm.vertices[:,0].max()-arm.vertices[:,0].min()
+seatw = seat.vertices[:,0].max()-seat.vertices[:,0].min()
+backw = back.vertices[:,0].max()-back.vertices[:,0].min()
+legw = leg.vertices[:,0].max()-leg.vertices[:,0].min()
+
+print(seatw)
+if arm_exist==True:
+    arm.verticies = arm.vertices * (seatw/armw)
+back.verticies = back.vertices * (seatw/backw)
+leg.verticies = leg.vertices * (seatw/legw)
+
+# ## fix height
+# back.verticies -= back.vertices[:,1].min()-seat.vertices[:,1].max()
+# leg.verticies -= leg.vertices[:,1].max()-seat.vertices[:,1].min()
+
+# random deformation
+# translation, rotation
+
 
 # render
 if arm_exist==True:
