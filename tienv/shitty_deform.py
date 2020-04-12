@@ -18,7 +18,7 @@ chair_meshes = []
 
 chair_dirs = os.listdir(all_chairs_dir)
 chair_meshes = []
-DELTA = 0.2
+DELTA = 0.5
 
 def curve2(mesh):
     max_x = mesh.vertices[:, 0].max()
@@ -39,10 +39,11 @@ def curve3(mesh):
     min_x = mesh.vertices[:, 0].min()
 
     mid_x = (max_x + min_x) / 2
+    d_half = np.abs(min_x - mid_x)
 
-    left_X = mid_x * (1 - DELTA)
+    left_X = mid_x - DELTA * d_half
     d = np.abs(min_x - left_X)
-    right_X = mid_x * (1 - DELTA)
+    right_X = mid_x + DELTA * d_half
     d_mid = np.abs(right_X - left_X)
     Y_line = np.cos(0 * pi/2) * MULP
 
