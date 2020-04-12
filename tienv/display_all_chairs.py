@@ -4,9 +4,7 @@ import pdb
 import os
 import random
 
-from icp import icp
 from trimesh.transformations import scale_matrix, translation_matrix
-from utils import is_cubic
 from scipy.spatial import ConvexHull
 from shapely.geometry import Polygon
 
@@ -23,7 +21,7 @@ mesh = trimesh.Trimesh(vertices=[[0, 0, 0], [0, 0, 1], [0, 1, 0]],
                        faces=[[0, 1, 2]],
                        process=False)
 
-all_chairs_dir = './data/chairs/'
+all_chairs_dir = '../data/chairs/'
 # seat_meshes = []
 # back_meshes = []
 chair_meshes = []

@@ -10,6 +10,7 @@ require:
 * anaconda (for trimesh)
 * trimesh 
 * numpy
+* a banana
 
 install anaconda: 
 * download anaconda (python 3.7): https://www.anaconda.com/distribution/#linux

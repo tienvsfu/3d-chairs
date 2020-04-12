@@ -21,7 +21,7 @@ mesh = trimesh.Trimesh(vertices=[[0, 0, 0], [0, 0, 1], [0, 1, 0]],
                        faces=[[0, 1, 2]],
                        process=False)
 
-all_chairs_dir = './data/chairs/'
+all_chairs_dir = '../data/chairs/'
 # seat_meshes = []
 # back_meshes = []
 chair_meshes = []
