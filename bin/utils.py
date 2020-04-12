@@ -139,3 +139,26 @@ def draw_vertices(vertices, f=0):
         ax.scatter([vertex[0]], [vertex[1]], [vertex[2]], c=np.array([color]))
 
     plt.show()
+
+
+def is_cubic(seat_mesh):
+    max_y = seat_mesh.vertices[:,1:2].max()
+    min_y = seat_mesh.vertices[:,1:2].min()
+
+    pc = np.array([f for f in seat_mesh.vertices if f[1] == min_y])
+    pf = np.array([f for f in seat_mesh.vertices if f[1] == max_y])
+    pc_min_x = pc[:,:1].min()
+    pc_max_x = pc[:,:1].max()
+    pf_min_x = pf[:,:1].min()
+    pf_max_x = pf[:,:1].max()
+
+    # points_furthest_min_x = points_furthest[:,:1].min()
+    # points_furthest_max_x = points_furthest[:,:1].max()
+
+    pdb.set_trace()
+    bb = seat_mesh.bounding_box.vertices
+    bb_min_x = bb[:,:1].min().item()
+    bb_max_x = bb[:,:1].max().item()
+
+    
+    return True

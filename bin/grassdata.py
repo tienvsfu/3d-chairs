@@ -63,6 +63,9 @@ class GRASSDataset(data.Dataset,):
             ops = torch.from_numpy(loadmat(os.path.join(dir, 'ops', '%d.mat' % (i+1)))['op']).int()
             syms = torch.from_numpy(loadmat(os.path.join(dir, 'syms', '%d.mat' % (i+1)))['sym']).t().float()
             labels = torch.from_numpy(loadmat(os.path.join(dir, 'labels', '%d.mat' % (i+1)))['label']).int()
+            shit = loadmat(os.path.join(dir, 'part mesh indices', '%d.mat' % (i+1)))['shapename']
+            pdb.set_trace()
+            print("Model num?", shit)
 
             tree = Tree(boxes, ops, syms, labels)
             self.trees.append(tree)
