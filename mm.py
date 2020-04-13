@@ -1,7 +1,7 @@
 import trimesh
 import random 
 
-# mix
+# parse
 n = 10
 c = [173,347,470,515,688,1095,1325,2820,3001,39101]
 a = random.randint(0,n-1)
@@ -19,15 +19,9 @@ back = trimesh.load('chairs/'+str(c[b])+'/back.obj')
 leg = trimesh.load('chairs/'+str(c[l])+'/leg.obj')
 seat = trimesh.load('chairs/'+str(c[s])+'/seat.obj')
 
-# if arm_exist==True:
-    # arm = trimesh.convex.convex_hull(arm)
-# back = trimesh.convex.convex_hull(back)
-# leg = trimesh.convex.convex_hull(leg)
-# seat = trimesh.convex.convex_hull(seat)
+# mix
 
-# match
-
-# deform 
+## deform 
 if arm_exist==True:
     s = random.uniform(0.85,1.15)
     for i in range(len(arm.vertices)):
@@ -42,12 +36,14 @@ s = random.uniform(0.85,1.15)
 for i in range(len(seat.vertices)):
     seat.vertices[i][2] = seat.vertices[i][2]*s 
 
-# rotate
+## rotate
 r = random.uniform(-0.1,0)
 rm = trimesh.transformations.rotation_matrix(r,[1,0,0],back.centroid)
 back.apply_transform(rm)
 
-# fix size (x)
+# match 
+
+## fix size (x)
 if arm_exist==True:
     armw = arm.vertices[:,0].max()-arm.vertices[:,0].min()
 seatw = seat.vertices[:,0].max()-seat.vertices[:,0].min()
@@ -64,7 +60,7 @@ scale = seatw/legw
 for i in range(len(leg.vertices)):
     leg.vertices[i][0] = leg.vertices[i][0]*scale
 
-# fix size (z)
+## fix size (z)
 if arm_exist==True:
     armd = arm.vertices[:,2].max()-arm.vertices[:,2].min()
 seatd = seat.vertices[:,2].max()-seat.vertices[:,2].min()
@@ -77,7 +73,7 @@ scale = seatd/legd
 for i in range(len(leg.vertices)):
     leg.vertices[i][2] = leg.vertices[i][2]*scale 
 
-# fix position (y)
+## fix position (y)
 if arm_exist==True:
     army = seat.vertices[:,1].min()-arm.vertices[:,1].min()
 backy = seat.vertices[:,1].min()-back.vertices[:,1].min()
@@ -91,7 +87,7 @@ for i in range(len(back.vertices)):
 for i in range(len(leg.vertices)):
     leg.vertices[i][1] = leg.vertices[i][1]+legy 
 
-# fix position (z)
+## fix position (z)
 if arm_exist==True:
     armz = seat.vertices[:,2].min()-arm.vertices[:,2].min()
 backz = seat.vertices[:,2].min()-back.vertices[:,2].min()
@@ -105,13 +101,12 @@ for i in range(len(back.vertices)):
 for i in range(len(leg.vertices)):
     leg.vertices[i][2] = leg.vertices[i][2]+legz 
 
-# fix connections
+## fix connections
 if arm_exist==True:
     arm = arm.difference(seat)
-    arm = arm.difference(back)
-    arm = arm.difference(leg)
+    # arm = arm.difference(back)
+    # arm = arm.difference(leg)
 leg = leg.difference(seat)
-leg = leg.difference(back)
 back = back.difference(seat)
 
 # color
