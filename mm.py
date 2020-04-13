@@ -12,7 +12,6 @@ s = random.randint(0,n-1)
 arm_exist = True
 try: 
     arm = trimesh.load('chairs/'+str(c[a])+'/arm.obj')
-    arm.visual.face_colors = [200,100,100,100]
 except:
     arm_exist = False
 
@@ -20,9 +19,11 @@ back = trimesh.load('chairs/'+str(c[b])+'/back.obj')
 leg = trimesh.load('chairs/'+str(c[l])+'/leg.obj')
 seat = trimesh.load('chairs/'+str(c[s])+'/seat.obj')
 
-back.visual.face_colors = [100,200,100,100]
-leg.visual.face_colors = [100,100,200,100]
-seat.visual.face_colors = [100,100,100,200]
+# if arm_exist==True:
+    # arm = trimesh.convex.convex_hull(arm)
+# back = trimesh.convex.convex_hull(back)
+# leg = trimesh.convex.convex_hull(leg)
+# seat = trimesh.convex.convex_hull(seat)
 
 # match
 
@@ -55,33 +56,32 @@ legw = leg.vertices[:,0].max()-leg.vertices[:,0].min()
 if arm_exist==True:
     scale = seatw/armw
     for i in range(len(arm.vertices)):
-        arm.vertices[i] = arm.vertices[i]*scale 
+        arm.vertices[i][0] = arm.vertices[i][0]*scale 
 scale = seatw/backw
 for i in range(len(back.vertices)):
-    back.vertices[i] = back.vertices[i]*scale 
+    back.vertices[i][0] = back.vertices[i][0]*scale 
 scale = seatw/legw
 for i in range(len(leg.vertices)):
-    leg.vertices[i] = leg.vertices[i]*scale
+    leg.vertices[i][0] = leg.vertices[i][0]*scale
 
 # fix size (z)
 if arm_exist==True:
     armd = arm.vertices[:,2].max()-arm.vertices[:,2].min()
 seatd = seat.vertices[:,2].max()-seat.vertices[:,2].min()
 legd = leg.vertices[:,2].max()-leg.vertices[:,2].min()
-if arm_exist==True and armd>seatd:
+if arm_exist==True:
     scale = seatd/armd 
     for i in range(len(arm.vertices)):
         arm.vertices[i][2] = arm.vertices[i][2]*scale 
-if legd>seatd:
-    scale = seatd/legd 
-    for i in range(len(leg.vertices)):
-        leg.vertices[i][2] = leg.vertices[i][2]*scale 
+scale = seatd/legd 
+for i in range(len(leg.vertices)):
+    leg.vertices[i][2] = leg.vertices[i][2]*scale 
 
 # fix position (y)
 if arm_exist==True:
-    army = seat.vertices[:,1].max()-arm.vertices[:,1].min()
-backy = seat.vertices[:,1].max()-back.vertices[:,1].min()
-legy = seat.vertices[:,1].min()-leg.vertices[:,1].max()
+    army = seat.vertices[:,1].min()-arm.vertices[:,1].min()
+backy = seat.vertices[:,1].min()-back.vertices[:,1].min()
+legy = seat.vertices[:,1].max()-leg.vertices[:,1].max()
 
 if arm_exist==True:
     for i in range(len(arm.vertices)):
@@ -90,29 +90,6 @@ for i in range(len(back.vertices)):
     back.vertices[i][1] = back.vertices[i][1]+backy  
 for i in range(len(leg.vertices)):
     leg.vertices[i][1] = leg.vertices[i][1]+legy 
-
-if arm_exist==True:
-    i = 0
-    while i==0:
-        step = (seat.vertices[:,1].min()-arm.vertices[:,1].min())/20
-        for i in range(len(arm.vertices)):
-            arm.vertices[i][1] = arm.vertices[i][1]+step   
-        collide = seat.intersection(arm)
-        i = len(collide.vertices)
-i = 0
-while i==0:
-    step = (seat.vertices[:,1].min()-back.vertices[:,1].min())/20
-    for i in range(len(back.vertices)):
-        back.vertices[i][1] = back.vertices[i][1]+step   
-    collide = seat.intersection(back)
-    i = len(collide.vertices)
-i = 0
-while i==0:
-    step = (seat.vertices[:,1].max()-leg.vertices[:,1].max())/20
-    for i in range(len(leg.vertices)):
-        leg.vertices[i][1] = leg.vertices[i][1]+step   
-    collide = seat.intersection(leg)
-    i = len(collide.vertices)
 
 # fix position (z)
 if arm_exist==True:
@@ -129,7 +106,20 @@ for i in range(len(leg.vertices)):
     leg.vertices[i][2] = leg.vertices[i][2]+legz 
 
 # fix connections
-    # tienv to complete
+if arm_exist==True:
+    arm = arm.difference(seat)
+    arm = arm.difference(back)
+    arm = arm.difference(leg)
+leg = leg.difference(seat)
+leg = leg.difference(back)
+back = back.difference(seat)
+
+# color
+if arm_exist==True:
+    arm.visual.face_colors = [200,100,100,100]
+back.visual.face_colors = [100,200,100,100]
+leg.visual.face_colors = [100,100,200,100]
+seat.visual.face_colors = [100,100,100,200]
 
 # render
 if arm_exist==True:
