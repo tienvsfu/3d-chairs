@@ -26,9 +26,27 @@ seat.visual.face_colors = [100,100,100,200]
 
 # match
 
-# fix relative size and position 
+# deform 
+if arm_exist==True:
+    s = random.uniform(0.5,1.5)
+    for i in range(len(arm.vertices)):
+        arm.vertices[i][2] = arm.vertices[i][2]*s  
+s = random.uniform(0.5,1.5)
+for i in range(len(back.vertices)):
+    back.vertices[i][2] = back.vertices[i][2]*s  
+s = random.uniform(0.5,1.5)
+for i in range(len(leg.vertices)):
+    leg.vertices[i][2] = leg.vertices[i][2]*s 
+s = random.uniform(0.5,1.5)
+for i in range(len(seat.vertices)):
+    seat.vertices[i][2] = seat.vertices[i][2]*s 
 
-# size
+# rotate
+r = random.uniform(-1,0)
+rm = trimesh.transformations.rotation_matrix(r,[1,0,0],back.centroid)
+back.apply_transform(rm)
+
+# fix size
 if arm_exist==True:
     armw = arm.vertices[:,0].max()-arm.vertices[:,0].min()
 seatw = seat.vertices[:,0].max()-seat.vertices[:,0].min()
@@ -46,20 +64,23 @@ scale = seatw/legw
 for i in range(len(leg.vertices)):
     leg.vertices[i] = leg.vertices[i]*scale
 
-# # position
-# if arm_exist==True:
-#     armh = seat.vertices[:,1].min()-arm.vertices[:,1].max()
-# backh = seat.vertices[:,1].max()-back.vertices[:,1].min()
-# legh = seat.vertices[:,1].min()-leg.vertices[:,1].max()
+# fix position
+if arm_exist==True:
+    armh = seat.vertices[:,1].max()-arm.vertices[:,1].min()
+backh = seat.vertices[:,1].max()-back.vertices[:,1].min()
+legh = seat.vertices[:,1].min()-leg.vertices[:,1].max()
 
-
-# ## fix height
-# back.verticies -= 
-# leg.verticies -= 
-
-# deformation --> widen and rotate
+if arm_exist==True:
+    for i in range(len(arm.vertices)):
+        arm.vertices[i][1] = arm.vertices[i][1]+armh  
+for i in range(len(back.vertices)):
+    back.vertices[i][1] = back.vertices[i][1]+backh  
+for i in range(len(leg.vertices)):
+    leg.vertices[i][1] = leg.vertices[i][1]+legh 
 
 # fix connections
+    # tienv to complete
+    # convex hull maybe??
 
 # render
 if arm_exist==True:
