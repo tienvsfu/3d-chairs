@@ -1,16 +1,16 @@
 464 project:
 1) pre-process: group segments --> jerrick working on automated version
+    * the current meshes is open (maybe jerrick's algorithm can have cleanly segmented parts)
 2) parse: convert to internal representation --> done
 3) mix: randomly select parts to form chair --> done
-4) match: apply deformation and fix connection --> tienv to fix connections
+4) match: apply deformation and fix connection --> done
 5) score: calculate score for new object --> thu dinh working on this
-
 
 require: 
 * anaconda (for trimesh)
 * trimesh 
 * numpy
-* a banana
+* a banana :)
 
 install anaconda: 
 * download anaconda (python 3.7): https://www.anaconda.com/distribution/#linux
