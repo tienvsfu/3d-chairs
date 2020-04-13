@@ -54,7 +54,7 @@ for chair_dir in chair_dirs:
 
 # add custom deformed parts
 seat_meshes += generate_seat_deformations(seat_meshes)
-back_meshes += generate_back_deformations(back_meshes)
+# back_meshes += generate_back_deformations(back_meshes)
 leg_meshes += generate_back_deformations(leg_meshes)
 arm_meshes += generate_back_deformations(arm_meshes)
 

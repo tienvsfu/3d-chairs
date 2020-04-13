@@ -4,9 +4,7 @@ import pdb
 import os
 import random
 
-from icp import icp
 from trimesh.transformations import scale_matrix, translation_matrix
-from utils import is_cubic
 
 random.seed(2)
 shift_X = 1
