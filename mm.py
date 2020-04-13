@@ -91,6 +91,29 @@ for i in range(len(back.vertices)):
 for i in range(len(leg.vertices)):
     leg.vertices[i][1] = leg.vertices[i][1]+legy 
 
+if arm_exist==True:
+    i = 0
+    while i==0:
+        step = (seat.vertices[:,1].min()-arm.vertices[:,1].min())/20
+        for i in range(len(arm.vertices)):
+            arm.vertices[i][1] = arm.vertices[i][1]+step   
+        collide = seat.intersection(arm)
+        i = len(collide.vertices)
+i = 0
+while i==0:
+    step = (seat.vertices[:,1].min()-back.vertices[:,1].min())/20
+    for i in range(len(back.vertices)):
+        back.vertices[i][1] = back.vertices[i][1]+step   
+    collide = seat.intersection(back)
+    i = len(collide.vertices)
+i = 0
+while i==0:
+    step = (seat.vertices[:,1].max()-leg.vertices[:,1].max())/20
+    for i in range(len(leg.vertices)):
+        leg.vertices[i][1] = leg.vertices[i][1]+step   
+    collide = seat.intersection(leg)
+    i = len(collide.vertices)
+
 # fix position (z)
 if arm_exist==True:
     armz = seat.vertices[:,2].min()-arm.vertices[:,2].min()
@@ -107,7 +130,6 @@ for i in range(len(leg.vertices)):
 
 # fix connections
     # tienv to complete
-    # convex hull or collision detection maybe ...
 
 # render
 if arm_exist==True:
