@@ -25,26 +25,41 @@ leg.visual.face_colors = [100,100,200,100]
 seat.visual.face_colors = [100,100,100,200]
 
 # match
-## fix width 
+
+# fix relative size and position 
+
+# size
 if arm_exist==True:
     armw = arm.vertices[:,0].max()-arm.vertices[:,0].min()
 seatw = seat.vertices[:,0].max()-seat.vertices[:,0].min()
 backw = back.vertices[:,0].max()-back.vertices[:,0].min()
 legw = leg.vertices[:,0].max()-leg.vertices[:,0].min()
 
-print(seatw)
 if arm_exist==True:
-    arm.verticies = arm.vertices * (seatw/armw)
-back.verticies = back.vertices * (seatw/backw)
-leg.verticies = leg.vertices * (seatw/legw)
+    scale = seatw/armw
+    for i in range(len(arm.vertices)):
+        arm.vertices[i] = arm.vertices[i]*scale 
+scale = seatw/backw
+for i in range(len(back.vertices)):
+    back.vertices[i] = back.vertices[i]*scale 
+scale = seatw/legw
+for i in range(len(leg.vertices)):
+    leg.vertices[i] = leg.vertices[i]*scale
+
+# # position
+# if arm_exist==True:
+#     armh = seat.vertices[:,1].min()-arm.vertices[:,1].max()
+# backh = seat.vertices[:,1].max()-back.vertices[:,1].min()
+# legh = seat.vertices[:,1].min()-leg.vertices[:,1].max()
+
 
 # ## fix height
-# back.verticies -= back.vertices[:,1].min()-seat.vertices[:,1].max()
-# leg.verticies -= leg.vertices[:,1].max()-seat.vertices[:,1].min()
+# back.verticies -= 
+# leg.verticies -= 
 
-# random deformation
-# translation, rotation
+# deformation --> widen and rotate
 
+# fix connections
 
 # render
 if arm_exist==True:
