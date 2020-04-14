@@ -26,21 +26,21 @@ def mm(obs):
 
     ## deform 
     if arm_exist==True:
-        s = random.uniform(0.85,1.15)
+        s = random.uniform(0.75,1.15)
         for i in range(len(arm.vertices)):
             arm.vertices[i][2] = arm.vertices[i][2]*s  
-    s = random.uniform(0.85,1.15)
+    s = random.uniform(0.75,1.15)
     for i in range(len(back.vertices)):
         back.vertices[i][2] = back.vertices[i][2]*s  
-    s = random.uniform(0.85,1.15)
+    s = random.uniform(0.75,1.15)
     for i in range(len(leg.vertices)):
         leg.vertices[i][2] = leg.vertices[i][2]*s 
-    s = random.uniform(0.85,1.15)
+    s = random.uniform(0.75,1.15)
     for i in range(len(seat.vertices)):
         seat.vertices[i][2] = seat.vertices[i][2]*s 
 
     ## rotate
-    r = random.uniform(-0.1,0)
+    r = random.uniform(-0.2,0)
     rm = trimesh.transformations.rotation_matrix(r,[1,0,0],back.centroid)
     back.apply_transform(rm)
 
@@ -68,6 +68,7 @@ def mm(obs):
         armd = arm.vertices[:,2].max()-arm.vertices[:,2].min()
     seatd = seat.vertices[:,2].max()-seat.vertices[:,2].min()
     legd = leg.vertices[:,2].max()-leg.vertices[:,2].min()
+    backd = back.vertices[:,2].max()-back.vertices[:,2].min()
     if arm_exist==True:
         scale = seatd/armd 
         for i in range(len(arm.vertices)):
@@ -75,12 +76,16 @@ def mm(obs):
     scale = seatd/legd 
     for i in range(len(leg.vertices)):
         leg.vertices[i][2] = leg.vertices[i][2]*scale 
+    scale = seatd/backd
+    s = random.uniform(0.2,0.4)
+    for i in range(len(back.vertices)):
+        back.vertices[i][2] = back.vertices[i][2]*(s*scale)
 
     ## fix position (y)
     if arm_exist==True:
-        army = seat.vertices[:,1].min()-arm.vertices[:,1].min()
-    backy = seat.vertices[:,1].min()-back.vertices[:,1].min()
-    legy = seat.vertices[:,1].max()-leg.vertices[:,1].max()
+        army = seat.vertices[:,1].max()-arm.vertices[:,1].min()
+    backy = seat.vertices[:,1].max()-back.vertices[:,1].min()
+    legy = seat.vertices[:,1].min()-leg.vertices[:,1].max()
 
     if arm_exist==True:
         for i in range(len(arm.vertices)):
@@ -90,6 +95,30 @@ def mm(obs):
     for i in range(len(leg.vertices)):
         leg.vertices[i][1] = leg.vertices[i][1]+legy 
 
+    # requires proper face normals. waiting for jerrick to do automated version ...
+    # step = (seat.vertices[:,1].max()-seat.vertices[:,1].min())/10
+    # if arm_exist==True:
+    #     n = 0
+    #     while n==0:
+    #         x = seat.intersection(arm)
+    #         n = len(x.vertices)
+    #         for i in range(len(arm.vertices)):
+    #             arm.vertices[i][1] = arm.vertices[i][1]-step
+    # n = 0
+    # while n==0:
+    #     x = seat.intersection(back)
+    #     n = len(x.vertices)
+    #     for i in range(len(back.vertices)):
+    #         back.vertices[i][1] = back.vertices[i][1]-step
+    # n = 0
+    # while n==0:
+    #     print('test1')
+    #     x = seat.intersection(leg)
+    #     print('test2')
+    #     n = len(x.vertices)
+    #     for i in range(len(leg.vertices)):
+    #         leg.vertices[i][1] = leg.vertices[i][1]+step
+        
     ## fix position (z)
     if arm_exist==True:
         armz = seat.vertices[:,2].min()-arm.vertices[:,2].min()
@@ -106,11 +135,12 @@ def mm(obs):
 
     ## fix connections
     # if arm_exist==True:
-    #     arm = arm.difference(seat)
-    #     arm = arm.difference(back)
-    #     arm = arm.difference(leg)
-    # leg = leg.difference(seat)
-    # leg = leg.difference(back)
+    #     seat = seat.difference(arm)
+    # #     arm = arm.difference(seat)
+    # #     arm = arm.difference(back)
+    # #     arm = arm.difference(leg)
+    # seat = seat.difference(leg)
+    # seat = seat.difference(back)
     # back = back.difference(seat)
     # back = back.difference(leg)
 
@@ -128,6 +158,4 @@ def mm(obs):
         chair = trimesh.Scene([back,leg,seat])
 
     chair.export(str(obs)+'.obj')
-    chair.show()
-
-#mm(10)
+    # chair.show()

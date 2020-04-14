@@ -24,3 +24,9 @@ install trimesh:
 install numpy:
 * pip install numpy
 
+note: 
+there seems to be a bug with trimesh
+i did some research online and it seems different versions of trimesh behave differently
+https://github.com/mikedh/trimesh/issues/504
+while it doesn't break the code (just need to run a few times)
+i just want to put a heads-up warning here.
