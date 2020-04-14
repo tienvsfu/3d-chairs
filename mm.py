@@ -159,7 +159,7 @@ def mm(obs):
         chair = trimesh.Scene([back,leg,seat])
 
     chair.export(str(obs)+'.obj')
-    # chair.show()
+    chair.show()
 
 # if u want to generate one
-# mm(10)
+mm(10)
