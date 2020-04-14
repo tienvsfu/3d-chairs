@@ -20,6 +20,7 @@ def mm(obs):
     leg = trimesh.load('chairs/'+str(c[l])+'/leg.obj')
     seat = trimesh.load('chairs/'+str(c[s])+'/seat.obj')
 
+    # this wont work cause it creates a big blob
     # back = trimesh.convex.convex_hull(back)
 
     # mix
@@ -151,7 +152,7 @@ def mm(obs):
     leg.visual.face_colors = [100,100,200,100]
     seat.visual.face_colors = [100,100,100,200]
 
-    # render
+    # export
     if arm_exist==True:
         chair = trimesh.Scene([arm,back,leg,seat])
     else:
@@ -159,3 +160,6 @@ def mm(obs):
 
     chair.export(str(obs)+'.obj')
     # chair.show()
+
+# if u want to generate one
+# mm(10)
