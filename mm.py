@@ -84,9 +84,9 @@ def mm(obs):
 
     ## fix position (y)
     if arm_exist==True:
-        army = seat.vertices[:,1].max()-arm.vertices[:,1].min()
-    backy = seat.vertices[:,1].max()-back.vertices[:,1].min()
-    legy = seat.vertices[:,1].min()-leg.vertices[:,1].max()
+        army = seat.vertices[:,1].min()-arm.vertices[:,1].min()
+    backy = seat.vertices[:,1].min()-back.vertices[:,1].min()
+    legy = seat.vertices[:,1].max()-leg.vertices[:,1].max()
 
     if arm_exist==True:
         for i in range(len(arm.vertices)):
@@ -95,30 +95,6 @@ def mm(obs):
         back.vertices[i][1] = back.vertices[i][1]+backy  
     for i in range(len(leg.vertices)):
         leg.vertices[i][1] = leg.vertices[i][1]+legy 
-
-    # requires proper face normals. waiting for jerrick to do automated version ...
-    # step = (seat.vertices[:,1].max()-seat.vertices[:,1].min())/10
-    # if arm_exist==True:
-    #     n = 0
-    #     while n==0:
-    #         x = seat.intersection(arm)
-    #         n = len(x.vertices)
-    #         for i in range(len(arm.vertices)):
-    #             arm.vertices[i][1] = arm.vertices[i][1]-step
-    # n = 0
-    # while n==0:
-    #     x = seat.intersection(back)
-    #     n = len(x.vertices)
-    #     for i in range(len(back.vertices)):
-    #         back.vertices[i][1] = back.vertices[i][1]-step
-    # n = 0
-    # while n==0:
-    #     print('test1')
-    #     x = seat.intersection(leg)
-    #     print('test2')
-    #     n = len(x.vertices)
-    #     for i in range(len(leg.vertices)):
-    #         leg.vertices[i][1] = leg.vertices[i][1]+step
         
     ## fix position (z)
     if arm_exist==True:
@@ -135,15 +111,10 @@ def mm(obs):
         leg.vertices[i][2] = leg.vertices[i][2]+legz 
 
     ## fix connections
-    # if arm_exist==True:
-    #     seat = seat.difference(arm)
-    # #     arm = arm.difference(seat)
-    # #     arm = arm.difference(back)
-    # #     arm = arm.difference(leg)
-    # seat = seat.difference(leg)
-    # seat = seat.difference(back)
-    # back = back.difference(seat)
-    # back = back.difference(leg)
+    if arm_exist==True:
+        arm = trimesh.intersections.slice_mesh_plane(arm, plane_normal=[0,1,0], plane_origin=seat.centroid)
+    back = trimesh.intersections.slice_mesh_plane(back, plane_normal=[0,1,0], plane_origin=seat.centroid)
+    leg = trimesh.intersections.slice_mesh_plane(leg, plane_normal=[0,-1,0], plane_origin=seat.centroid)
 
     # color
     if arm_exist==True:

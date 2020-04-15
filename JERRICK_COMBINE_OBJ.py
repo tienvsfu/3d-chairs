@@ -14,8 +14,8 @@ def output_obj_name(argument):
     return switcher.get(argument, "unknown") 
 
 #get input IDs from command line
-# 173,347,688,1095,1325,2820,3001,39101
-inputs = input("Please enter test IDs (e.g. 6012, 3453, 3336, 2234, 1392):\n")
+# 173,347,470,515,688,1095,1325,2820,3001,39101
+inputs = input("Please enter test IDs (e.g. 173,347,470,515,688,1095,1325,2820,3001,39101):\n")
 selected_test_cases = re.findall('\d+', inputs)
 
 #iterate all the test IDs
