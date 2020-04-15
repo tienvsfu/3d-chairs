@@ -3,104 +3,110 @@ import tensorflow.compat.v1 as tf
 import os
 import cv2
 from model import cnn_model_fn
-
+from projector import ObjProjector
+from PIL import Image
+import operator
 
 tf.logging.set_verbosity(tf.logging.INFO)
 
-def load(dimension):
+OBJ_DIR = os.path.join('')
 
-    imagesTop = []
-    imagesSide = []
-    imagesFront = []
+DIMENSION = 56
 
-    ls = 0
-    folder = "evaluate-chairs/"
+PROJECT_SIZE = 800
 
-    length = len(os.listdir(folder)) // 3
-    ls += length
+def resize(array, size):
+    return np.array(Image.fromarray(array).resize((size, size)))
 
-    for filename in os.listdir(folder):
+def load(batch_size=20):
+    
+    images_front = []
+    images_top = []
+    images_left = []
+    images_right = []
 
-        view = int(filename.split(".")[0])
-        print(view)
-        view = view % 3
+    obj_meshes = []
 
-        img = cv2.imread(folder+filename)
-        if dimension < 224:
-            img = cv2.resize(img, dsize=(dimension, dimension), interpolation=cv2.INTER_CUBIC)
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        img = np.nan_to_num(img)
+     pj = ObjProjector()
 
-        #This relies on the files being loaded in order. For that to happen, the 0 padding in the file name is crucial.
-        #If you do not have that, then you need to change the logic of this loop.
+    files = os.listdir(OBJ_DIR)
+    counter = 0
+    for filename in files:
+        obj_mesh = trimesh.load(os.path.join(OBJ_DIR, filename))
+        obj_meshes.append(obj_mesh)
 
-        if img is not None:
-            if view == 2:
-                imagesSide.append(1. - img / 255.)
-            elif view == 0:
-                imagesTop.append(1. - img / 255.)
-            else:
-                imagesFront.append(1. - img / 255.)
+        if counter == batch_size-1 or filename == files[len(files) - 1]:
+            for obj_mesh in obj_meshes:
+                front, top, left, right = pj.project(PTOJECT_SIZE, obj_mesh)
 
-    imagesTop = np.array(imagesTop)
-    imagesFront = np.array(imagesFront)
-    imagesSide = np.array(imagesSide)
+                if (DIMENSION < PROJECT_SIZE):
+                    front = resize(front, DIMENSION)
+                    top = resize(top, DIMENSION)
+                    left = resize(left, DIMENSION)
+                    right = resize(right, DIMENSION)
+            
+                images_front.append(front)
+                images_top.append(top)
+                images_left.append(left)
+                images_right.append(right)
 
-    #flatten the images
-    imagesTop = np.reshape(imagesTop, (ls, dimension * dimension))
-    imagesFront = np.reshape(imagesFront, (ls, dimension * dimension))
-    imagesSide = np.reshape(imagesSide, (ls, dimension * dimension))
+            obj_meshes = []
+            counter = 0
+        else:
+            counter = counter + 1
+    
+    ls = len(images_front)
 
-    return imagesTop, imagesFront, imagesSide
+    images_front = np.array(images_front)
+    images_top = np.array(images_top)
+    images_left = np.array(images_left)
+    images_right = np.array(images_right)
+        
+        #flatten images
+    images_top = np.reshape(images_top, (ls, DIMENSION * DIMENSION))
+    images_front = np.reshape(images_front, (ls, DIMENSION * DIMENSION))
+    images_left = np.reshape(images_left, (ls, DIMENSION * DIMENSION))
+    images_right = np.reshape(images_right, (ls, DIMENSION * DIMENSION))
 
-def main(*argv):
-    tf.disable_v2_behavior()
+    return files, images_top, images_front, images_left, images_right
 
-    #load chairs dataset
-    imagesTop, imagesFront, imagesSide = load(56)
+#####################################
 
-    test_images = {}
+files, images_top, images_front, images_left, images_right = load()
+
+test_images = {}
     #then the rest are test images and labels
-    test_images["Top"] = imagesTop
-    test_images["Front"] = imagesFront
-    test_images["Side"] = imagesSide
+test_images["Top"] = images_top
+test_images["Front"] = images_front
+test_images["Left"] = images_left
+test_images["Right"] = images_right
 
-    test_evaluations = [[],[],[]]
+test_evaluations = [[],[],[],[]]
 
-    for id, view in enumerate(["Front", "Side", "Top"]):
+for id, view in enumerate(["Top","Front","Left", "Right"]):
         classifier = tf.estimator.Estimator(model_fn=cnn_model_fn, model_dir="checkpoint/"+view+"/")
 
         eval_input_fn = tf.estimator.inputs.numpy_input_fn(x={"x": test_images[view]},
                                                            num_epochs=1,
                                                            shuffle=False)
 
-        #The line below returns a generator that has the probability that the tested samples are Positive cases or Negative cases
         eval_results = classifier.predict(input_fn=eval_input_fn)
 
-        #You need to iterate over the generator returned above to display the actual probabilities
-        #This line should print something like {'classes': 0, 'probabilities': array([0.91087427, 0.08912573])}
-        #the first element of 'probabilities' is the correlation of input with the Negative samples. The second element means positive.
-        #If you evaluate multiple samples, just keep iterating over the eval_results generator.
-        #eval_instance = next(eval_results)
-        #print(eval_instance)
 
         # This is how you extract the correlation to the positive class of the first element in your evaluation folder
         for eval in eval_results:
-            #print("probability that this instance is positive is %3.2f " % eval['probabilities'][1])
             test_evaluations[id].append(eval['probabilities'][1])
 
-    #the probability that the chair is a positive example is given by the minimum of the probabilities from each of the three views
-    #in the default configuration sent, the first ten chairs should be negatives (low value) and the ten last chairs should be positives (high value)
-    #as can be seen in this quick evaluation, there is roon for inprovement in the algorithm
 
-    print("The probability that the chair is a positive example is given by the minimum of the probabilities from each of the three views.")
-    print("In the default configuration sent, the first ten chairs should be negatives (low value) and the ten last chairs should be positives (high value).")
-    print("There is a lot of room for improvement here!")
-    evaluation_chairs = np.amin(test_evaluations, axis=0)
-    print(evaluation_chairs)
+evaluation_chairs = np.amin(test_evaluations, axis=0)
 
+results = {}
+for i, filename in enumerate(files):
+    key = filename.split(".")[0]
+    val = evaluation_chairs[i]
+    results.update( {key : val} )
 
-if __name__ == "__main__":
-    # Add ops to save and restore all the variables.
-    #saver = tf.train.Saver()
-    tf.app.run()
+sorted_results = dict(sorted(results.items(), key=operator.itemgetter(1),reverse=True))
+
+print("Sorted plausible scores of models: ")
+print(sorted_results)
