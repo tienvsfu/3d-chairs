@@ -2,7 +2,7 @@ import trimesh
 import random 
 
 def mm(obs,display):
-    # parse
+    # mix
     n = 10
     c = [173,347,470,515,688,1095,1325,2820,3001,39101]
     a = random.randint(0,n-1)
@@ -12,18 +12,13 @@ def mm(obs,display):
 
     arm_exist = True
     try: 
-        arm = trimesh.load('chairs/'+str(c[a])+'/arm.obj')
+        arm = trimesh.load('data/out/'+str(c[a])+'/arm.obj')
     except:
         arm_exist = False
 
-    back = trimesh.load('chairs/'+str(c[b])+'/back.obj')
-    leg = trimesh.load('chairs/'+str(c[l])+'/leg.obj')
-    seat = trimesh.load('chairs/'+str(c[s])+'/seat.obj')
-
-    # this wont work cause it creates a big blob
-    # back = trimesh.convex.convex_hull(back)
-
-    # mix
+    back = trimesh.load('data/out/'+str(c[b])+'/back.obj')
+    leg = trimesh.load('data/out/'+str(c[l])+'/leg.obj')
+    seat = trimesh.load('data/out/'+str(c[s])+'/seat.obj')
 
     ## deform 
     if arm_exist==True:
