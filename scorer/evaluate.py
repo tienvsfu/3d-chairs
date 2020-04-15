@@ -10,7 +10,9 @@ import operator
 
 tf.logging.set_verbosity(tf.logging.INFO)
 
-OBJ_DIR = os.path.join('..', '..','output')
+OBJ_DIR = os.path.join('..','output','obj')
+
+SCORE_DIR = os.path.join('..','output','scores.txt')
 
 DIMENSION = 56
 
@@ -113,7 +115,7 @@ print("Sorted plausible scores of models: ")
 print(sorted_results)
 
 #print results to txt file
-output_file = open('scores.txt', 'w+')
+output_file = open(SCORE_DIR, 'w+')
 for key in sorted_results:
     output_file.write('Score for output obj ' + str(key) + ' is: ' + str(sorted_results[key]) + '\n')
 output_file.close()
