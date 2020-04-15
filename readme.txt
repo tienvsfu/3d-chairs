@@ -1,12 +1,13 @@
 464 project:
-1) parse: convert segments to parts --> done
-2) mix: select parts randomly to form a chair --> done
-3) match: apply deformation and fix connection --> done
-4) score: calculate score for new chair --> wip (thu dinh)
+1) parse: convert segments to parts
+2) mix: generate chair
+3) match: apply deformation and fix connections
+4) score: calculate score
 
 run:
-* put the segmented chair in "data/in"
-* enter python3 m.py 
+* place inputs in "data/in"
+* modify c1 and c2 in "m.py" to match input ids  
+* enter in terminal: python3 m.py 
 
 require: 
 * anaconda (for trimesh)
