@@ -6,9 +6,7 @@
 
 run:
 * put the segmented chair in "data/in"
-* enter python3 p.py to convert it to parts in "data/out"
-* enter python3 mm.py to create a randomly generated chair "100.obj"
-* enter python3 mm-layout.py to generate 6 chairs and display them
+* enter python3 m.py 
 
 require: 
 * anaconda (for trimesh)
