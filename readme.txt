@@ -1,6 +1,5 @@
 464 project:
-1) pre-process: group segments --> jerrick working on automated version
-    * the current meshes is open (maybe jerrick's algorithm can have cleanly segmented parts)
+1) pre-process: group segments --> done
 2) parse: convert to internal representation --> done
 3) mix: randomly select parts to form chair --> done
 4) match: apply deformation and fix connection --> done
