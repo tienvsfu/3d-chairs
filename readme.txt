@@ -1,9 +1,14 @@
 464 project:
-1) pre-process: group segments --> done
-2) parse: convert to internal representation --> done
-3) mix: randomly select parts to form chair --> done
-4) match: apply deformation and fix connection --> done
-5) score: calculate score for new object --> thu dinh working on this
+1) pre-process: convert segments to parts --> done
+2) mix: select parts randomly to form a chair --> done
+3) match: apply deformation and fix connection --> done
+4) score: calculate score for new chair --> wip (thu dinh)
+
+run:
+* put the segmented chair in "data/in"
+* enter python3 p.py to convert it to parts in "data/out"
+* enter python3 mm.py to create a randomly generated chair "10.obj"
+* enter python3 mm-layout.py to generate 6 chairs and display them
 
 require: 
 * anaconda (for trimesh)
