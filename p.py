@@ -24,6 +24,7 @@ def parse(inputs):
 
     #iterate all the test IDs
     for test_case in selected_test_cases:
+        print(test_case)
         #read json
         with open("data/in/" + test_case + "/result.json") as f:
             data = json.load(f)
@@ -37,6 +38,7 @@ def parse(inputs):
         last_output_obj_name = ''
 
         for first_children in data[0]['children']:
+            print('test1')
             #get obj file name
             get_output_obj_name = output_obj_name(first_children["name"])
             
@@ -52,12 +54,29 @@ def parse(inputs):
 
             #append each object to each scene
             for second_children in first_children['children']:
-                if 'children' in second_children:#if else in case here has no children 
+                print('test2') 
+                if 'children' in second_children:#if else in case here has no children
                     for third_children in second_children['children']:
-                        for objs in third_children['objs']:
-                            filepath = "data/in/" + test_case + "/objs/"+ objs + ".obj"
-                            if os.path.isfile(filepath) and os.path.exists(filepath):#ignore missing files
-                                scene.add_geometry(trimesh.load(filepath))
+                        print('test3') 
+                        if 'children' in third_children: 
+                            for fourth_children in third_children['children']:
+                                print('test4')
+                                if 'children' in fourth_children: 
+                                    for fifth_children in fourth_children['children']:
+                                        for objs in fifth_children['objs']:
+                                            filepath = "data/in/" + test_case + "/objs/"+ objs + ".obj"
+                                            if os.path.isfile(filepath) and os.path.exists(filepath):#ignore missing files
+                                                scene.add_geometry(trimesh.load(filepath))
+                                else:
+                                    for objs in fourth_children['objs']:
+                                        filepath = "data/in/" + test_case + "/objs/"+ objs + ".obj"
+                                        if os.path.isfile(filepath) and os.path.exists(filepath):#ignore missing files
+                                            scene.add_geometry(trimesh.load(filepath))
+                        else:
+                            for objs in third_children['objs']:
+                                filepath = "data/in/" + test_case + "/objs/"+ objs + ".obj"
+                                if os.path.isfile(filepath) and os.path.exists(filepath):#ignore missing files
+                                    scene.add_geometry(trimesh.load(filepath))
                 else:
                     for objs in second_children['objs']:
                             filepath = "data/in/" + test_case + "/objs/"+ objs + ".obj"
