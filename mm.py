@@ -142,4 +142,4 @@ def mm(obs,display):
         chair.show()
 
 # if u want to generate one
-mm(10,True)
+mm(100,True)
