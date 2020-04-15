@@ -5,11 +5,12 @@ import cv2
 from model import cnn_model_fn
 from projector import ObjProjector
 from PIL import Image
+import trimesh
 import operator
 
 tf.logging.set_verbosity(tf.logging.INFO)
 
-OBJ_DIR = os.path.join('')
+OBJ_DIR = os.path.join('..', '..','output')
 
 DIMENSION = 56
 
@@ -27,7 +28,7 @@ def load(batch_size=20):
 
     obj_meshes = []
 
-     pj = ObjProjector()
+    pj = ObjProjector()
 
     files = os.listdir(OBJ_DIR)
     counter = 0
@@ -37,7 +38,7 @@ def load(batch_size=20):
 
         if counter == batch_size-1 or filename == files[len(files) - 1]:
             for obj_mesh in obj_meshes:
-                front, top, left, right = pj.project(PTOJECT_SIZE, obj_mesh)
+                front, top, left, right = pj.project(PROJECT_SIZE, obj_mesh)
 
                 if (DIMENSION < PROJECT_SIZE):
                     front = resize(front, DIMENSION)
@@ -84,7 +85,7 @@ test_images["Right"] = images_right
 test_evaluations = [[],[],[],[]]
 
 for id, view in enumerate(["Top","Front","Left", "Right"]):
-        classifier = tf.estimator.Estimator(model_fn=cnn_model_fn, model_dir="checkpoint/"+view+"/")
+        classifier = tf.estimator.Estimator(model_fn=cnn_model_fn, model_dir="checkpoint/"+view+"/", params={'dimension': DIMENSION})
 
         eval_input_fn = tf.estimator.inputs.numpy_input_fn(x={"x": test_images[view]},
                                                            num_epochs=1,
@@ -110,3 +111,9 @@ sorted_results = dict(sorted(results.items(), key=operator.itemgetter(1),reverse
 
 print("Sorted plausible scores of models: ")
 print(sorted_results)
+
+#print results to txt file
+output_file = open('scores.txt', 'w+')
+for key in sorted_results:
+    output_file.write('Score for output obj ' + str(key) + ' is: ' + str(sorted_results[key]) + '\n')
+output_file.close()
