@@ -1,5 +1,5 @@
 464 project:
-1) pre-process: convert segments to parts --> done
+1) parse: convert segments to parts --> done
 2) mix: select parts randomly to form a chair --> done
 3) match: apply deformation and fix connection --> done
 4) score: calculate score for new chair --> wip (thu dinh)
