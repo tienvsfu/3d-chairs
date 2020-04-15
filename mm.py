@@ -1,7 +1,7 @@
 import trimesh
 import random 
 
-def mm(obs):
+def mm(obs,display):
     # parse
     n = 10
     c = [173,347,470,515,688,1095,1325,2820,3001,39101]
@@ -130,7 +130,9 @@ def mm(obs):
         chair = trimesh.Scene([back,leg,seat])
 
     chair.export(str(obs)+'.obj')
-    chair.show()
+
+    if display==True:
+        chair.show()
 
 # if u want to generate one
-mm(10)
+mm(10,True)

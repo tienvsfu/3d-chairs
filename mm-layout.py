@@ -8,7 +8,7 @@ chairs = []
 
 while o<n:
     try:
-        mm(o)
+        mm(o,False)
     except:
         continue
     ob = trimesh.load(str(o)+'.obj')
