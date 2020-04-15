@@ -119,8 +119,20 @@ def mm(obs,display):
     # color
     if arm_exist==True:
         arm.visual.face_colors = [200,100,100,100]
+        if a==b:
+            arm.visual.face_colors = [100,200,100,100]
+        if a==l:
+            arm.visual.face_colors = [100,100,200,100]
+        if a==s:
+            arm.visual.face_colors = [100,100,100,200]
     back.visual.face_colors = [100,200,100,100]
+    if b==l:
+        back.visual.face_colors = [100,100,200,100]
+    if b==s:
+        back.visual.face_colors = [100,100,100,200]        
     leg.visual.face_colors = [100,100,200,100]
+    if l==s:
+        leg.visual.face_colors = [100,100,100,200]
     seat.visual.face_colors = [100,100,100,200]
 
     # export
