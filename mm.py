@@ -1,10 +1,10 @@
 import trimesh
 import random 
 
-def mm(obs,display):
+def mm(obs,display,c):
     # mix
     n = 10
-    c = [173,347,470,515,688,1095,1325,2820,3001,39101]
+    # c = [173,347,470,515,688,1095,1325,2820,3001,39101]
     a = random.randint(0,n-1)
     b = random.randint(0,n-1)
     l = random.randint(0,n-1)
