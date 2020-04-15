@@ -7,12 +7,7 @@ n = 6
 chairs = []
 
 while o<n:
-    try:
-        mm(o,False)
-    except:
-        continue
-    ob = trimesh.load(str(o)+'.obj')
-
+    ob = trimesh.load('data/mm'+str(o)+'.obj')
     for i in range(len(ob.vertices)):
         cols = int(o%3)
         rows = int(o/3)
