@@ -5,8 +5,9 @@
 
 import numpy as np
 import tensorflow.compat.v1 as tf
-from chair_dataset import ChairDataset
 import os
+
+from .chair_dataset import ChairDataset
 
 tf.logging.set_verbosity(tf.logging.INFO)
 

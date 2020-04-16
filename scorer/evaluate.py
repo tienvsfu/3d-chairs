@@ -1,27 +1,27 @@
 import numpy as np
 import tensorflow.compat.v1 as tf
 import os
-import cv2
-from model import cnn_model_fn
-from projector import ObjProjector
 from PIL import Image
 import trimesh
 import operator
 
+from .model import cnn_model_fn
+from .projector import ObjProjector
+
 tf.logging.set_verbosity(tf.logging.INFO)
 
-OBJ_DIR = os.path.join('..','output','obj')
+# obj_dir = os.path.join('..','data','mm-a')
 
-SCORE_DIR = os.path.join('..','output','scores.txt')
+# score_dir = os.path.join('scores.txt')
 
-DIMENSION = 56
+# dimension = 56
 
-PROJECT_SIZE = 800
+# project_size = 800
 
 def resize(array, size):
     return np.array(Image.fromarray(array).resize((size, size)))
 
-def load(batch_size=20):
+def load(obj_dir,  batch_size=20, dimension=56, project_size=800):
     
     images_front = []
     images_top = []
@@ -32,21 +32,21 @@ def load(batch_size=20):
 
     pj = ObjProjector()
 
-    files = os.listdir(OBJ_DIR)
+    files = os.listdir(obj_dir)
     counter = 0
     for filename in files:
-        obj_mesh = trimesh.load(os.path.join(OBJ_DIR, filename))
+        obj_mesh = trimesh.load(os.path.join(obj_dir, filename))
         obj_meshes.append(obj_mesh)
 
         if counter == batch_size-1 or filename == files[len(files) - 1]:
             for obj_mesh in obj_meshes:
-                front, top, left, right = pj.project(PROJECT_SIZE, obj_mesh)
+                front, top, left, right = pj.project(project_size, obj_mesh)
 
-                if (DIMENSION < PROJECT_SIZE):
-                    front = resize(front, DIMENSION)
-                    top = resize(top, DIMENSION)
-                    left = resize(left, DIMENSION)
-                    right = resize(right, DIMENSION)
+                if (dimension < project_size):
+                    front = resize(front, dimension)
+                    top = resize(top, dimension)
+                    left = resize(left, dimension)
+                    right = resize(right, dimension)
             
                 images_front.append(front)
                 images_top.append(top)
@@ -66,56 +66,61 @@ def load(batch_size=20):
     images_right = np.array(images_right)
         
         #flatten images
-    images_top = np.reshape(images_top, (ls, DIMENSION * DIMENSION))
-    images_front = np.reshape(images_front, (ls, DIMENSION * DIMENSION))
-    images_left = np.reshape(images_left, (ls, DIMENSION * DIMENSION))
-    images_right = np.reshape(images_right, (ls, DIMENSION * DIMENSION))
+    images_top = np.reshape(images_top, (ls, dimension * dimension))
+    images_front = np.reshape(images_front, (ls, dimension * dimension))
+    images_left = np.reshape(images_left, (ls, dimension * dimension))
+    images_right = np.reshape(images_right, (ls, dimension * dimension))
 
     return files, images_top, images_front, images_left, images_right
 
-#####################################
 
-files, images_top, images_front, images_left, images_right = load()
+def evaluate(obj_dir,  batch_size=20, dimension=56, project_size=800):
+    model_output_dir = os.path.join(os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__)))), 'checkpoint')
 
-test_images = {}
-    #then the rest are test images and labels
-test_images["Top"] = images_top
-test_images["Front"] = images_front
-test_images["Left"] = images_left
-test_images["Right"] = images_right
+    files, images_top, images_front, images_left, images_right = load(obj_dir)
 
-test_evaluations = [[],[],[],[]]
+    test_images = {}
+    
+    test_images["Top"] = images_top
+    test_images["Front"] = images_front
+    test_images["Left"] = images_left
+    test_images["Right"] = images_right
 
-for id, view in enumerate(["Top","Front","Left", "Right"]):
-        classifier = tf.estimator.Estimator(model_fn=cnn_model_fn, model_dir="checkpoint/"+view+"/", params={'dimension': DIMENSION})
+    test_evaluations = [[],[],[],[]]
 
-        eval_input_fn = tf.estimator.inputs.numpy_input_fn(x={"x": test_images[view]},
-                                                           num_epochs=1,
-                                                           shuffle=False)
+    for id, view in enumerate(["Top","Front","Left", "Right"]):
+            model_dir = os.path.join(model_output_dir, view)
+            classifier = tf.estimator.Estimator(model_fn=cnn_model_fn, model_dir=model_dir, params={'dimension': dimension})
 
-        eval_results = classifier.predict(input_fn=eval_input_fn)
+            eval_input_fn = tf.estimator.inputs.numpy_input_fn(x={"x": test_images[view]},
+                                                            num_epochs=1,
+                                                            shuffle=False)
+
+            eval_results = classifier.predict(input_fn=eval_input_fn)
+
+            for eval in eval_results:
+                test_evaluations[id].append(eval['probabilities'][1])
 
 
-        # This is how you extract the correlation to the positive class of the first element in your evaluation folder
-        for eval in eval_results:
-            test_evaluations[id].append(eval['probabilities'][1])
+    evaluation_chairs = np.amin(test_evaluations, axis=0)
 
+    results = {}
+    for i, filename in enumerate(files):
+        key = filename.split(".")[0]
+        val = evaluation_chairs[i]
+        results.update( {key : val} )
 
-evaluation_chairs = np.amin(test_evaluations, axis=0)
+    sorted_results = dict(sorted(results.items(), key=operator.itemgetter(1),reverse=True))
 
-results = {}
-for i, filename in enumerate(files):
-    key = filename.split(".")[0]
-    val = evaluation_chairs[i]
-    results.update( {key : val} )
+    print("Sorted plausible scores of models: ")
+    print(sorted_results)
 
-sorted_results = dict(sorted(results.items(), key=operator.itemgetter(1),reverse=True))
+    return sorted_results
 
-print("Sorted plausible scores of models: ")
-print(sorted_results)
-
-#print results to txt file
-output_file = open(SCORE_DIR, 'w+')
-for key in sorted_results:
-    output_file.write('Score for output obj ' + str(key) + ' is: ' + str(sorted_results[key]) + '\n')
-output_file.close()
+#Write results to file 
+def export_results(sorted_results, score_dir):
+    #print results to txt file
+    output_file = open(score_dir, 'w+')
+    for key in sorted_results:
+        output_file.write('obj ' + str(key) + ': ' + str(sorted_results[key]) + '\n')
+    output_file.close()
