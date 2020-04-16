@@ -6,8 +6,8 @@
 
 run:
 * place inputs in "data/in"
-* modify c1 and c2 in "m.py" to match input ids  
-* enter in terminal: python3 m.py 
+* run "python3 m.py" and enter the "ids" you want to use
+* the bottom-left chair has the highest score then it goes right then up...
 
 require: 
 * pyrender

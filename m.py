@@ -12,6 +12,7 @@ import re
 from p import *
 from mm import *
 
+# load
 c1 = input("Please enter test IDs (e.g. 2585, 2323, 43872):\n")
 selected_test_cases = re.findall('\d+', c1)
 c2 = []
@@ -34,8 +35,8 @@ for test_case in selected_test_cases:
 #     print('no such set')
 #     exit() 
 
-# parse(c1)
-# generate(10,c2)
+parse(c1)
+generate(10,c2)
 
 # scorer
 #results is a dict with structure: {'mm_a':{0 : probability_0, 1:probability_1}, 'mm_b':{0: probability_0, 1: probability_1}}
