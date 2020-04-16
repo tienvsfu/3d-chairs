@@ -91,6 +91,7 @@ class ChairDeformator:
             elif (strategy == DeformStrategy.TRANSLATE):
                 final_meshes.append(self._translate(mesh))
             elif (strategy == DeformStrategy.DUPLICATE):
+                final_meshes.append(mesh)
                 final_meshes.append(self._duplicate(mesh))
 
         return self._merge_meshes(final_meshes)
