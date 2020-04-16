@@ -1,8 +1,3 @@
-# Base code by the github user kamalkraj
-# available at https://github.com/kamalkraj/Tensorflow-Paper-Implementation
-# this is an implementation of Lenet http://yann.lecun.com/exdb/publis/pdf/lecun-01a.pdf
-# The basic idea to combine three classifiers, one for each view, was extracted from Zhu et al. https://www.sfu.ca/~cza68/papers/zhu_sig17_scsr.pdf
-
 import numpy as np
 import tensorflow.compat.v1 as tf
 import os
@@ -132,5 +127,3 @@ def train(dimension, images, labels, model_output_dir):
                                                             shuffle=False)
         eval_results = classifier.evaluate(input_fn=eval_input_fn)
         print(eval_results)
-
-
