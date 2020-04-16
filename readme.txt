@@ -10,6 +10,8 @@ run:
 * enter in terminal: python3 m.py 
 
 require: 
+* pyrender
+* tensorflow
 * anaconda (for trimesh)
 * trimesh 
 * numpy
@@ -26,6 +28,16 @@ install trimesh:
 
 install numpy:
 * pip install numpy
+
+install pyrender:
+* pip install pyrender
+
+patch pyrender:
+Pyrender has a bug where it cannot render the depth image correctly, to apply a patch for this bug:
+* The patch is originally at: https://github.com/mmatl/pyrender/pull/40
+* Find the location where pyrender is installed: pip show pyrender | grep Location
+* Note down the installed location from the above command, add "pyrender" to the end: .../site-packages/pyrender
+* Overwrite the camera.py and renderer.py files included in the pyrender_patch directory of this project in the above directory
 
 note: 
 there seems to be a bug with trimesh
