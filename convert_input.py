@@ -2,6 +2,7 @@ import trimesh
 import os
 import json
 import re
+import tqdm
 
 #get output obj's file name
 def output_obj_name(argument): 
@@ -18,20 +19,25 @@ def output_obj_name(argument):
 
 # inputs = input("Please enter test IDs (e.g. 173,347,470,515,688,1095,1325,2820,3001,39101):\n")
 
-def parse(inputs):
+def parse(in_path, out_path):
+    chair_dirs = os.listdir(in_path)
 
-    selected_test_cases = re.findall('\d+', inputs)
+    if not os.path.isdir(out_path):
+        os.mkdir(out_path)
 
-    #iterate all the test IDs
-    for test_case in selected_test_cases:
-        #print(test_case)
-        #read json
-        with open("data/in/" + test_case + "/result.json") as f:
+    print("Converting chair files...")
+    for chair_dir in tqdm.tqdm(chair_dirs):
+        chair_path = os.path.join(in_path, chair_dir, 'result.json')
+        chair_path_out = os.path.join(out_path, chair_dir)
+
+        with open(chair_path) as f:
             data = json.load(f)
 
         #create new folder for each test ID
-        if not os.path.isdir('data/out/' + test_case + '/'):
-            os.mkdir('data/out/' + test_case + '/')
+        if not os.path.isdir(chair_path_out):
+            os.mkdir(chair_path_out)
+        else:
+            continue
 
         #to deal with symmetric sets of arms, symmetric sets of legs, etc.
         repeat_flag = 0
@@ -44,9 +50,9 @@ def parse(inputs):
             
             #set a flag to combine symmetric sets of same object 
             if (get_output_obj_name == last_output_obj_name ):
-                repeat_flag = 1;
+                repeat_flag = 1
             else:
-                repeat_flag = 0;
+                repeat_flag = 0
 
             #create a scene
             if (repeat_flag == 0):
@@ -64,29 +70,32 @@ def parse(inputs):
                                 if 'children' in fourth_children: 
                                     for fifth_children in fourth_children['children']:
                                         #print('test5')
-                                        for objs in fifth_children['objs']:
-                                            filepath = "data/in/" + test_case + "/objs/"+ objs + ".obj"
+                                        for obj in fifth_children['objs']:
+                                            filepath = os.path.join(in_path, chair_dir, 'objs', f'{obj}.obj')
+                                            # filepath = "data/in/" + test_case + "/objs/"+ objs + ".obj"
                                             if os.path.isfile(filepath) and os.path.exists(filepath):#ignore missing files
                                                 scene.add_geometry(trimesh.load(filepath))
                                 else:
-                                    for objs in fourth_children['objs']:
-                                        filepath = "data/in/" + test_case + "/objs/"+ objs + ".obj"
+                                    for obj in fourth_children['objs']:
+                                        # filepath = "data/in/" + test_case + "/objs/"+ objs + ".obj"
+                                        filepath = os.path.join(in_path, chair_dir, 'objs', f'{obj}.obj')                                        
                                         if os.path.isfile(filepath) and os.path.exists(filepath):#ignore missing files
                                             scene.add_geometry(trimesh.load(filepath))
                         else:
-                            for objs in third_children['objs']:
-                                filepath = "data/in/" + test_case + "/objs/"+ objs + ".obj"
+                            for obj in third_children['objs']:
+                                # filepath = "data/in/" + test_case + "/objs/"+ objs + ".obj"
+                                filepath = os.path.join(in_path, chair_dir, 'objs', f'{obj}.obj')
                                 if os.path.isfile(filepath) and os.path.exists(filepath):#ignore missing files
                                     scene.add_geometry(trimesh.load(filepath))
                 else:
-                    for objs in second_children['objs']:
-                            filepath = "data/in/" + test_case + "/objs/"+ objs + ".obj"
-                            if os.path.isfile(filepath) and os.path.exists(filepath):#ignore missing files
-                                scene.add_geometry(trimesh.load(filepath))
+                    for obj in second_children['objs']:
+                        # filepath = "data/in/" + test_case + "/objs/"+ objs + ".obj"
+                        filepath = os.path.join(in_path, chair_dir, 'objs', f'{obj}.obj')
+                        if os.path.isfile(filepath) and os.path.exists(filepath):#ignore missing files
+                            scene.add_geometry(trimesh.load(filepath))
 
             #again to deal with symmetric sets.
             last_output_obj_name = get_output_obj_name
             
             #export obj file
-            scene.export('data/out/' + test_case + '/' + get_output_obj_name)
-            
+            scene.export(os.path.join(chair_path_out, get_output_obj_name))

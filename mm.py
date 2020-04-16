@@ -115,23 +115,23 @@ def mm(obs,display,c):
 
     # color
     # print('color')
-    if arm_exist==True:
-        t1 = int(c[ida])%256
-        t2 = int(c[ida]/3)%256
-        t3 = int(c[ida]/7)%256
-        arm.visual.face_colors = [t1,t2,t3,100]
-    t1 = int(c[idb])%256
-    t2 = int(c[idb]/3)%256
-    t3 = int(c[idb]/7)%256
-    back.visual.face_colors = [0+t1,0+t2,0+t3,100]
-    t1 = int(c[idl])%256
-    t2 = int(c[idl]/3)%256
-    t3 = int(c[idl]/7)%256
-    leg.visual.face_colors = [0+t1,0+t2,0+t3,100]
-    t1 = int(c[ids])%256
-    t2 = int(c[ids]/3)%256
-    t3 = int(c[ids]/7)%256
-    seat.visual.face_colors = [0+t1,0+t2,0+t3,100]
+    # if arm_exist==True:
+    #     t1 = int(c[ida])%256
+    #     t2 = int(c[ida]/3)%256
+    #     t3 = int(c[ida]/7)%256
+    #     arm.visual.face_colors = [t1,t2,t3,100]
+    # t1 = int(c[idb])%256
+    # t2 = int(c[idb]/3)%256
+    # t3 = int(c[idb]/7)%256
+    # back.visual.face_colors = [0+t1,0+t2,0+t3,100]
+    # t1 = int(c[idl])%256
+    # t2 = int(c[idl]/3)%256
+    # t3 = int(c[idl]/7)%256
+    # leg.visual.face_colors = [0+t1,0+t2,0+t3,100]
+    # t1 = int(c[ids])%256
+    # t2 = int(c[ids]/3)%256
+    # t3 = int(c[ids]/7)%256
+    # seat.visual.face_colors = [0+t1,0+t2,0+t3,100]
 
     # export
     if arm_exist==True:
@@ -151,10 +151,10 @@ def mm(obs,display,c):
 def generate(n,c):
     o = 0
     while o<n:
-        try:
-            mm(o,False,c)
-        except:
-            continue
+        # try:
+        mm(o,False,c)
+        # except:
+        #     continue
         o += 1
         
 
