@@ -2,24 +2,25 @@ import trimesh
 import random 
 
 def mm(obs,display,c):
+    print("obs: "+str(obs))
     # mix
     
     # c = [173,347,470,515,688,1095,1325,2820,3001,39101]
     n = len(c)
-    a = random.randint(0,n-1)
-    b = random.randint(0,n-1)
-    l = random.randint(0,n-1)
-    s = random.randint(0,n-1)
+    ida = random.randint(0,n-1)
+    idb = random.randint(0,n-1)
+    idl = random.randint(0,n-1)
+    ids = random.randint(0,n-1)
 
     arm_exist = True
     try: 
-        arm = trimesh.load('data/out/'+str(c[a])+'/arm.obj')
+        arm = trimesh.load('data/out/'+str(c[ida])+'/arm.obj')
     except:
         arm_exist = False
 
-    back = trimesh.load('data/out/'+str(c[b])+'/back.obj')
-    leg = trimesh.load('data/out/'+str(c[l])+'/leg.obj')
-    seat = trimesh.load('data/out/'+str(c[s])+'/seat.obj')
+    back = trimesh.load('data/out/'+str(c[idb])+'/back.obj')
+    leg = trimesh.load('data/out/'+str(c[idl])+'/leg.obj')
+    seat = trimesh.load('data/out/'+str(c[ids])+'/seat.obj')
 
     ## deform 
     if arm_exist==True:
@@ -113,23 +114,24 @@ def mm(obs,display,c):
     leg = trimesh.intersections.slice_mesh_plane(leg, plane_normal=[0,-1,0], plane_origin=seat.centroid)
 
     # color
+    # print('color')
     if arm_exist==True:
-        arm.visual.face_colors = [200,100,100,100]
-        if a==b:
-            arm.visual.face_colors = [100,200,100,100]
-        if a==l:
-            arm.visual.face_colors = [100,100,200,100]
-        if a==s:
-            arm.visual.face_colors = [100,100,100,200]
-    back.visual.face_colors = [100,200,100,100]
-    if b==l:
-        back.visual.face_colors = [100,100,200,100]
-    if b==s:
-        back.visual.face_colors = [100,100,100,200]        
-    leg.visual.face_colors = [100,100,200,100]
-    if l==s:
-        leg.visual.face_colors = [100,100,100,200]
-    seat.visual.face_colors = [100,100,100,200]
+        t1 = int(c[ida])%256
+        t2 = int(c[ida]/3)%256
+        t3 = int(c[ida]/7)%256
+        arm.visual.face_colors = [t1,t2,t3,100]
+    t1 = int(c[idb])%256
+    t2 = int(c[idb]/3)%256
+    t3 = int(c[idb]/7)%256
+    back.visual.face_colors = [0+t1,0+t2,0+t3,100]
+    t1 = int(c[idl])%256
+    t2 = int(c[idl]/3)%256
+    t3 = int(c[idl]/7)%256
+    leg.visual.face_colors = [0+t1,0+t2,0+t3,100]
+    t1 = int(c[ids])%256
+    t2 = int(c[ids]/3)%256
+    t3 = int(c[ids]/7)%256
+    seat.visual.face_colors = [0+t1,0+t2,0+t3,100]
 
     # export
     if arm_exist==True:
@@ -143,7 +145,8 @@ def mm(obs,display,c):
         chair.show()
 
 # if u want to generate one
-# mm(100,True)
+# c10 = [2585, 2323, 43872]
+# mm(100,True,c10)
 
 def generate(n,c):
     o = 0
@@ -153,6 +156,7 @@ def generate(n,c):
         except:
             continue
         o += 1
+        
 
 def display(n):
     o = 0
