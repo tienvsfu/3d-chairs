@@ -32,6 +32,9 @@ install numpy:
 install pyrender:
 * pip install pyrender
 
+install tensorflow:
+* pip install tensorflow
+
 patch pyrender:
 Pyrender has a bug where it cannot render the depth image correctly, to apply a patch for this bug:
 * The patch is originally at: https://github.com/mmatl/pyrender/pull/40
