@@ -7,7 +7,6 @@ import trimesh
 import matplotlib.pyplot as plt
 import random
 from enum import Enum
-from numpy import linalg as LA
 from pyrender.constants import RenderFlags as RF
 
 class DeformStrategy(Enum):

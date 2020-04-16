@@ -3,22 +3,13 @@ import numpy as np
 import pyrender
 import trimesh
 import matplotlib.pyplot as plt
-from numpy import linalg as LA
 from pyrender.constants import RenderFlags as RF
-import cv2
 
 RX_TOP_MATRIX = np.array([[1,0,0,0],[0,0,-1,0],[0,1,0,0],[0,0,0,1]])
 RY_LEFT_MATRIX = np.array([[0,0,1,0],[0,1,0,0],[-1,0,0,0],[0,0,0,1]])
 RY_RIGHT_MATRIX = np.array([[0,0,-1,0],[0,1,0,0],[1,0,0,0],[0,0,0,1]])
 
 class ObjProjector:
-    # def __init__(self):#, obj_dir):
-        #self.OBJ_DIR = obj_dir
-    
-    # def _normalize(self, depth):
-    #     max_depth = np.max(depth)
-    #     min_depth = np.min(depth)
-    #     norm_depth = (depth-min_depth)/(max_depth-min_depth)
 
     def _get_projection(self, tm_mesh, render_size):
         tm_scene = tm_mesh.scene()
@@ -30,9 +21,6 @@ class ObjProjector:
         camera_position = tm_mesh.scene().camera_transform
         scene.add(camera, pose=camera_position)
 
-        #light = pyrender.DirectionalLight(intensity=1.0)
-        #light_position = camera_position
-        #scene.add(light, pose=light_position)
         r = pyrender.OffscreenRenderer(render_size, render_size)
         depth_buffer = r.render(scene, flags=RF.DEPTH_ONLY)
         r.delete()
@@ -54,9 +42,7 @@ class ObjProjector:
         tm_right = mesh.copy().apply_transform(RY_RIGHT_MATRIX)
         depth_right = self._get_projection(tm_right, render_size)
         
-        # obj = np.multiply(LA.norm(np.mean(color, axis=2)), depth)
         return depth_front, depth_top, depth_left, depth_right#, obj
-
 
 '''
 Projector class is used to project obj object to different angle (front, top, left, right)
