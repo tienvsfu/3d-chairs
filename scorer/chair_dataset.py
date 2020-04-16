@@ -1,12 +1,12 @@
 import cv2
 import os
 import numpy as np
-from projector import ObjProjector
-from deformation import ChairDeformator
 import trimesh
 import matplotlib.pyplot as plt
 from PIL import Image
 
+from .projector import ObjProjector
+from .deformation import ChairDeformator
 
 '''
 load chair dataset. Dimension refers to the target dimension of the output image, used to save up memory.

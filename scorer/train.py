@@ -1,10 +1,11 @@
 import numpy as np
 import tensorflow.compat.v1 as tf
-from chair_dataset import ChairDataset
-import model
 import trimesh
 import os
 import time
+
+from .chair_dataset import ChairDataset
+import .model
 
 OBJ_DIR = os.path.join('..', '..', 'Chair', 'models')
 
