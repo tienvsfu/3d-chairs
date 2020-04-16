@@ -4,7 +4,7 @@ import re
 
 from p import *
 from mm import *
-from s import *
+#from s import *
 
 # load
 c1 = input("Please enter test IDs (e.g. 2585, 2323, 43872):\n")
@@ -15,7 +15,7 @@ for test_case in selected_test_cases:
 
 parse(c1)
 generate(10,c2)
-score()
+#score()
 
 # display
 ranking = []

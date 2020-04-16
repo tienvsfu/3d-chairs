@@ -9,8 +9,8 @@ def score():
     obj_dirs = params.obj_dirs
     score_dir = params.score_dir
 
-    scorer
-    results is a dict with structure: {'mm_a':{0 : probability_0, 1:probability_1}, 'mm_b':{0: probability_0, 1: probability_1}}
+    #scorer
+    #results is a dict with structure: {'mm_a':{0 : probability_0, 1:probability_1}, 'mm_b':{0: probability_0, 1: probability_1}}
     results = {}
     for obj_dir in obj_dirs:
         base_name =  os.path.basename(os.path.normpath(obj_dir))
