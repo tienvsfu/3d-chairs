@@ -160,7 +160,7 @@ def generate(n,c):
 
 def display(ranking):
     chairs = []
-    for o in range(6):
+    for o in range(len(ranking)):
         ob = trimesh.load('data/mm/'+str(ranking[o])+'.obj')
         for i in range(len(ob.vertices)):
             cols = int(o%3)
