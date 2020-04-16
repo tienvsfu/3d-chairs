@@ -7,8 +7,6 @@
 # obj_dirs = params.obj_dirs
 # score_dir = params.score_dir
 
-import re
-
 from p import *
 from mm import *
 
@@ -34,8 +32,8 @@ for test_case in selected_test_cases:
 #     print('no such set')
 #     exit() 
 
-# parse(c1)
-# generate(10,c2)
+parse(c1)
+generate(10,c2)
 
 # scorer
 #results is a dict with structure: {'mm_a':{0 : probability_0, 1:probability_1}, 'mm_b':{0: probability_0, 1: probability_1}}
@@ -57,11 +55,12 @@ for test_case in selected_test_cases:
 #     evaluate.export_results(results[base_name], score_file_dir)
 
 
-# display
-ranking = []
-f = open('scores/mm-a.txt')
-for l in f:
-    ob = re.findall('\d+', l)
-    ranking.append(int(ob[0]))
+# need scores.txt
 
-display(ranking[0:6])
+
+
+so = []
+f = open("demofile.txt", "r")
+print(f.read())
+
+display(6)
