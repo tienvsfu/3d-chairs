@@ -2,15 +2,15 @@
 # import ntpath
 # import sys
 # import shutil
+# import params
+# from scorer import evaluate
+# obj_dirs = params.obj_dirs
+# score_dir = params.score_dir
 
 from p import *
 from mm import *
-# import params
 
-# from scorer import evaluate
 
-# obj_dirs = params.obj_dirs
-# score_dir = params.score_dir
 
 c1 = input("Please enter test IDs (e.g. 2585, 2323, 43872):\n")
 selected_test_cases = re.findall('\d+', c1)
@@ -18,7 +18,7 @@ c2 = []
 for test_case in selected_test_cases:
     c2.append(int(test_case))
 
-print(c2)
+# print(c2)
 # set = 'b'
 
 # if set=='a':
