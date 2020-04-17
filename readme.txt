@@ -1,39 +1,14 @@
-464 project:
-1) parse: convert segments to parts
-2) mix: generate chair
-3) match: apply deformation and fix connections
-4) score: calculate score
 
-run:
-* place inputs in "data/in"
-* run "python3 m.py" and enter the "ids" you want to use
-* the bottom-left chair has the highest score then it goes right then up...
+## Quickstart
+`python main.py`
+`python main.py --input-path ./data/bunch_of_chairs --output-path output/`
 
-require: 
+### Dependencies
 * pyrender
 * tensorflow
-* anaconda (for trimesh)
 * trimesh 
 * numpy
 * a banana :)
-
-install anaconda: 
-* download anaconda (python 3.7): https://www.anaconda.com/distribution/#linux
-* terminal: bash ~/Downloads/Anaconda3-2020.02-Linux-x86_64.sh
-* say yes to everything
-
-install trimesh:
-* terminal: conda install -c conda-forge trimesh
-* terminal: pip install trimesh[easy]
-
-install numpy:
-* pip install numpy
-
-install pyrender:
-* pip install pyrender
-
-install tensorflow:
-* pip install tensorflow
 
 patch pyrender:
 Pyrender has a bug where it cannot render the depth image correctly, to apply a patch for this bug:

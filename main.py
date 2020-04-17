@@ -9,13 +9,13 @@ from gen_chairs import gen_chairs, display
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-i','--input-path', help='Path to folder with part jsons', default='./data/in')
-    parser.add_argument('-m','--parts-output-path', help='Path to output corresponding .objs', default='./data/out')
     parser.add_argument('-o','--output-path', help='Path to put full generated chairs', default='./data/mm')
 
     args = parser.parse_args()
 
     in_path = args.input_path
-    parsed_chairs_path = args.parts_output_path
+    parsed_chairs_path = os.path.join(in_path, '..', 'out')
+    print(os.path.abspath(parsed_chairs_path))
     generated_chairs_path = args.output_path
 
     # convert .jsons into part .objs
