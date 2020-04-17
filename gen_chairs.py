@@ -3,8 +3,6 @@ import random
 import os
 import pdb
 
-from colour import Color
-
 def color_part(mesh, chair_id):
     if not mesh.is_empty:
         t1 = int(chair_id)%100
@@ -15,8 +13,15 @@ def color_part(mesh, chair_id):
 def gen_chairs(path_to_chairs, path_to_output, n_times=10, display=False):
     chair_dirs = os.listdir(path_to_chairs)
 
-    for k in range(n_times):
-        print(f'Generating chair {k}')
+    if not os.path.isdir(path_to_output):
+        os.mkdir(path_to_output)
+
+    print(f'Generating {n_times} chairs')
+
+    generated_chairs = []
+    iter = 0
+
+    while iter < n_times:
         n = len(chair_dirs)
         ida = random.randint(0,n-1)
         idb = random.randint(0,n-1)
@@ -166,23 +171,34 @@ def gen_chairs(path_to_chairs, path_to_output, n_times=10, display=False):
         # export
         if arm_exist==True:
             chair = trimesh.Scene([arm,back,leg,seat])
+            # chair = arm + back + leg + seat
         else:
+            # chair = back + leg + seat
             chair = trimesh.Scene([back,leg,seat])
 
         try:
-            chair_path = os.path.join(path_to_output, f'{str(k)}.obj')
+            # unfortunately exporting the mesh directly doesn't work
+            chair_path = os.path.join(path_to_output, f'{str(iter)}.obj')
             chair.export(chair_path)
-            # trimesh.load(chair_path)
-        except:
-            k -= 1
+            chair_as_mesh = trimesh.load(chair_path)
+
+            generated_chairs.append(chair_as_mesh)
+            print(f'Generated chair {iter}')
+            iter += 1
+        except Exception as e:
+            # pdb.set_trace()
+            # iter -= 1
+            continue
 
         if display==True:
             chair.show()
 
-def display(ranking):
+    return generated_chairs
+
+def display(ordered_meshes):
     chairs = []
-    for o in range(len(ranking)):
-        ob = trimesh.load('data/mm/'+str(ranking[o])+'.obj')
+
+    for o, ob in enumerate(ordered_meshes):
         for i in range(len(ob.vertices)):
             cols = int(o%3)
             rows = int(o/3)

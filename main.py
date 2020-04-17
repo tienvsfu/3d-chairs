@@ -1,6 +1,7 @@
 import argparse
 import os
 import shutil
+import pdb
 
 from scorer import evaluate
 from gen_chairs import gen_chairs, display
@@ -22,18 +23,20 @@ if __name__ == "__main__":
     parse(in_path, parsed_chairs_path)
 
     # generate some chairs, and export as .objs to generated_chairs_path
-    gen_chairs(path_to_chairs=parsed_chairs_path, path_to_output=generated_chairs_path, n_times=10)
+    generated_chairs = gen_chairs(path_to_chairs=parsed_chairs_path, path_to_output=generated_chairs_path, n_times=10)
 
     # sanity check
     chair_meshes = []
     chair_dirs = os.listdir(generated_chairs_path)
 
     for chair_dir in chair_dirs:
-        try:
-            chair_mesh = trimesh.load(os.path.join(generated_chairs_path, chair_dir))
-        except:
-            print(f'{chair_dir} was fuct')
-            exit()
+        extension = os.path.splitext(chair_dir)[1][1:]
+        if extension == 'obj':
+            try:
+                chair_mesh = trimesh.load(os.path.join(generated_chairs_path, chair_dir))
+            except:
+                print(f'{chair_dir} was fuct. Please feed your pet a banana')
+                exit()
 
     # calculate the scores for the generated chairs
     sorted_results = evaluate.evaluate(generated_chairs_path)
@@ -44,12 +47,7 @@ if __name__ == "__main__":
         os.remove(score_dir)
     evaluate.export_results(sorted_results, score_dir)
 
-    # sorted_results = score()
+    sorted_chairs = [generated_chairs[int(i)] for i in sorted_results.keys()]
+    # pdb.set_trace()
 
-    # display
-    # ranking = []
-    # for key in sorted_results:
-    #     ranking.append(int(key))
-    # display(ranking[0:6])
-
-    # display(list(map(int, sorted_results.keys()))[0:6])
+    display(sorted_chairs)

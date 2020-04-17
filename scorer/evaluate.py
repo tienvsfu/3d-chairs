@@ -32,7 +32,7 @@ def load(obj_dir,  batch_size=20, dimension=56, project_size=800):
 
     pj = ObjProjector()
 
-    files = os.listdir(obj_dir)
+    files = [filename for filename in os.listdir(obj_dir) if os.path.splitext(filename)[1][1:] == 'obj']
     counter = 0
     for filename in files:
         obj_mesh = trimesh.load(os.path.join(obj_dir, filename))
@@ -65,7 +65,7 @@ def load(obj_dir,  batch_size=20, dimension=56, project_size=800):
     images_left = np.array(images_left)
     images_right = np.array(images_right)
         
-        #flatten images
+    #flatten images
     images_top = np.reshape(images_top, (ls, dimension * dimension))
     images_front = np.reshape(images_front, (ls, dimension * dimension))
     images_left = np.reshape(images_left, (ls, dimension * dimension))
@@ -112,8 +112,8 @@ def evaluate(obj_dir,  batch_size=20, dimension=56, project_size=800):
 
     sorted_results = dict(sorted(results.items(), key=operator.itemgetter(1),reverse=True))
 
-    print("Sorted plausible scores of models: ")
-    print(sorted_results)
+    # print("Sorted plausible scores of models: ")
+    # print(sorted_results)
 
     return sorted_results
 

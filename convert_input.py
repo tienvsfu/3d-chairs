@@ -36,8 +36,6 @@ def parse(in_path, out_path):
         #create new folder for each test ID
         if not os.path.isdir(chair_path_out):
             os.mkdir(chair_path_out)
-        else:
-            continue
 
         #to deal with symmetric sets of arms, symmetric sets of legs, etc.
         repeat_flag = 0

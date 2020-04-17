@@ -2,5 +2,5 @@ __pycache__
 combined_obj_jerrick/.DS_Store
 .DS_Store
 scorer/checkpoint
-data/mm/*.obj
-data/out/*.obj
+data/mm/
+data/out/
