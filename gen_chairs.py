@@ -2,6 +2,7 @@ import trimesh
 import random
 import os
 import pdb
+import numpy as np
 
 def color_part(mesh, chair_id):
     if not mesh.is_empty:
@@ -197,13 +198,14 @@ def gen_chairs(path_to_chairs, path_to_output, n_times=10, display=False):
 
 def display(ordered_meshes):
     chairs = []
+    grid_len = np.ceil(np.sqrt(len(ordered_meshes)))
 
     for o, ob in enumerate(ordered_meshes):
         for i in range(len(ob.vertices)):
-            cols = int(o%3)
-            rows = int(o/3)
-            ob.vertices[i][0] = ob.vertices[i][0]+(3*cols)
-            ob.vertices[i][1] = ob.vertices[i][1]+(3*rows)
+            cols = int(o%grid_len)
+            rows = int(o/grid_len)
+            ob.vertices[i][0] += 3 * cols
+            ob.vertices[i][1] -= 3 * rows
         chairs.append(ob)
     scene = trimesh.Scene(chairs)
     scene.show()
