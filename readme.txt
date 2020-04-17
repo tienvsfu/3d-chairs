@@ -1,13 +1,15 @@
 
 ## Quickstart
-`python main.py`
+`python main.py` or 
 `python main.py --input-path ./data/bunch_of_chairs --output-path output/`
 
-### Dependencies
+## Dependencies
 * pyrender
 * tensorflow
 * trimesh 
 * numpy
+* tqdm
+* colour
 * a banana :)
 
 patch pyrender:
