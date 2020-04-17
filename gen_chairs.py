@@ -4,13 +4,6 @@ import os
 import pdb
 import numpy as np
 
-def color_part(mesh, chair_id):
-    if not mesh.is_empty:
-        t1 = int(chair_id)%100
-        t2 = int(chair_id/5)%100
-        t3 = int(chair_id/8)%100
-        mesh.visual.face_colors = [100+t3,100+t2,100+t1,100]
-    
 def gen_chairs(path_to_chairs, path_to_output, n_times=10, display=False):
     chair_dirs = os.listdir(path_to_chairs)
 
