@@ -9,7 +9,6 @@
 * trimesh 
 * numpy
 * tqdm
-* colour
 * a banana :)
 
 patch pyrender:
