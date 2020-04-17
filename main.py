@@ -10,17 +10,18 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-i','--input-path', help='Path to folder with part jsons', default='./data/in')
     parser.add_argument('-o','--output-path', help='Path to put full generated chairs', default='./data/mm')
+    parser.add_argument('-id','--chair-ids', help='Chair IDs in input path, or "all"', default='all')
 
     args = parser.parse_args()
 
     in_path = args.input_path
+    chair_ids = args.chair_ids
     parsed_chairs_path = os.path.join(in_path, '..', 'out')
-    print(os.path.abspath(parsed_chairs_path))
     generated_chairs_path = args.output_path
 
     # convert .jsons into part .objs
     from convert_input import *
-    parse(in_path, parsed_chairs_path)
+    parse(in_path, parsed_chairs_path, chair_ids)
 
     # generate some chairs, and export as .objs to generated_chairs_path
     generated_chairs = gen_chairs(path_to_chairs=parsed_chairs_path, path_to_output=generated_chairs_path, n_times=10)
