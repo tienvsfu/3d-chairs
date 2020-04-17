@@ -1,7 +1,7 @@
 
 ## Quickstart
 `python main.py` or 
-`python main.py --input-path ./data/bunch_of_chairs --output-path output/`
+`python main.py --input-path ./data/bunch_of_chairs`
 
 ## Dependencies
 * pyrender

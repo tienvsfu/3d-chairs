@@ -4,13 +4,18 @@ import os
 import pdb
 import numpy as np
 
-def gen_chairs(path_to_chairs, path_to_output, n_times=10, display=False):
-    chair_dirs = os.listdir(path_to_chairs)
+def gen_chairs(path_to_chairs, path_to_output, chair_ids, n_times=10, display=False):
+    chair_dirs = [d for d in os.listdir(path_to_chairs) if d.isdigit()]
+
+    if chair_ids != 'all':
+        chair_dirs = [d for d in chair_dirs if d in chair_ids.split(',')]
+
+    # pdb.set_trace()
 
     if not os.path.isdir(path_to_output):
         os.mkdir(path_to_output)
 
-    print(f'Generating {n_times} chairs')
+    print(f'Generating {n_times} chairs from {" ".join(chair_dirs)}')
 
     generated_chairs = []
     iter = 0

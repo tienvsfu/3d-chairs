@@ -21,15 +21,13 @@ def output_obj_name(argument):
 # inputs = input("Please enter test IDs (e.g. 173,347,470,515,688,1095,1325,2820,3001,39101):\n")
 
 def parse(in_path, out_path, chair_ids):
-    chair_dirs = os.listdir(in_path)
+    chair_dirs = [d for d in os.listdir(in_path) if d.isdigit()]
 
     if not os.path.isdir(out_path):
         os.mkdir(out_path)
 
     if chair_ids != 'all':
         chair_dirs = [d for d in chair_dirs if d in chair_ids.split(',')]
-
-    pdb.set_trace()
 
     print("Converting chair files...")
     for chair_dir in tqdm.tqdm(chair_dirs):
