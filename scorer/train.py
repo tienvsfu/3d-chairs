@@ -4,8 +4,8 @@ import trimesh
 import os
 import time
 
-from .chair_dataset import ChairDataset
-import .model
+from chair_dataset import ChairDataset
+import model
 
 OBJ_DIR = os.path.join('..', '..', 'Chair', 'models')
 
@@ -50,7 +50,7 @@ def load(batch_size=20):
         part_meshes.append(part_mesh)
         # if (i == 50):
         #     break
-        if counter == batch_size-1:
+        if counter == batch_size-1 or i == (len(files) - 1):
            
             imagesTop, imagesFront, imagesLeft, imagesRight, labelsTop, labelsFront, labelsLeft, labelsRight = cd.generate_data(DIMENSION, obj_meshes, part_meshes)
             
