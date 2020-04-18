@@ -10,8 +10,7 @@
 * Output obj files and scores.txt are in data/in_generated
 
 ## Scorer
-* Scorer checkpoint is available at https://drive.google.com/open?id=1aPOpeJ8n7dYpCFUMY14zChi_OWMFC1XO
-* Please download and unzip it in scorer directory before running main.py to get the correct scores.
+* scorer was trained and checkpoint is provided in this package.
 * If you want to use scorer to evaluate the test set you can call evaluate method in evaluate.py (refer to main.py)
 * If you want to retrain the scorer with different data, use train.py and replace the data and model output directory
 
