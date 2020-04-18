@@ -196,12 +196,15 @@ def gen_chairs(path_to_chairs, path_to_output, chair_ids, n_times=10, display=Fa
 
 def display(ordered_meshes):
     chairs = []
-    grid_len = np.ceil(np.sqrt(len(ordered_meshes)))
+    # grid_len = np.ceil(np.sqrt(len(ordered_meshes)))
+    # grid_len = 3
 
     for o, ob in enumerate(ordered_meshes):
+        rows = int(o/5)
+        cols = int((o%5)%5)
+        # pdb.set_trace()
+
         for i in range(len(ob.vertices)):
-            cols = int(o%grid_len)
-            rows = int(o/grid_len)
             ob.vertices[i][0] += 3 * cols
             ob.vertices[i][1] -= 3 * rows
         chairs.append(ob)

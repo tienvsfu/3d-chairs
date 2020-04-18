@@ -55,4 +55,6 @@ if __name__ == "__main__":
     sorted_chairs = [generated_chairs[int(i)] for i in sorted_results.keys()]
     # pdb.set_trace()
 
+    # display best 3 and worst 3
+    # display(sorted_chairs[:3] + sorted_chairs[-3:])
     display(sorted_chairs)
