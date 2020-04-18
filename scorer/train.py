@@ -2,14 +2,15 @@ import numpy as np
 import tensorflow.compat.v1 as tf
 import trimesh
 import os
+import sys
 import time
 
-from chair_dataset import ChairDataset
-import model
+from scorer.chair_dataset import ChairDataset
+import scorer.model
 
-OBJ_DIR = os.path.join('..', '..', 'Chair', 'models')
+OBJ_DIR = os.path.join('..', 'Chair', 'models')
 
-PART_DIR = os.path.join('..', '..', 'Chair_parts')
+PART_DIR = os.path.join('..', 'Chair_parts')
 
 MODEL_OUTPUT_DIR = os.path.join('checkpoint')
 
