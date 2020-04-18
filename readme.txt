@@ -4,12 +4,17 @@
 `python main.py --input-path ./data/bunch_of_chairs`
 
 ## Dependencies
-* pyrender
-* tensorflow
-* trimesh 
-* numpy
-* tqdm
-* a banana :)
+*Refer to requirements.txt for full list of dependencies. The main packages are listed below:
+** trimesh==3.6.20
+** pyrender==0.1.39
+** tensorflow==2.1.0
+** numpy==1.18.1
+** tqdm==4.42.1
+
+##Scorer
+scorer checkpoint was provided as part of the code package.
+If you want to use scorer to evaluate the test set you can call evaluate method in evaluate.py (refer to main.py)
+If you want to retrain the scorer with different data, use train.py and replace the data and model output directory
 
 ## Patch
 Pyrender has a bug where it cannot render the depth image correctly, to apply a patch for this bug:
