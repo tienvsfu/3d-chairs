@@ -7,7 +7,7 @@
 * Alternatively include the path to the input data set as in the second command above
 
 ## Output Data
-* Output obj files and scores. txt are in data/in_generated
+* Output obj files and scores.txt are in data/in_generated
 
 ## Scorer
 * Scorer checkpoint is available at https://drive.google.com/open?id=1aPOpeJ8n7dYpCFUMY14zChi_OWMFC1XO
